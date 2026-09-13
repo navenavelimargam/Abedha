@@ -1,0 +1,54 @@
+MRPL SALES, MARKETING & COMMERCIAL DEPARTMENT
+GENERAL OPERATING PROCEDURE — SALES-GEN-001
+Effective Date: 01-Apr-2025 | Review Cycle: Annual | Owner: Head of Sales & Marketing
+
+1. DEPARTMENT SCOPE
+This department covers regional and city-level sales, the dealer/distributor network,
+pricing and revenue management, market research, digital and brand marketing, and customer
+sentiment/feedback analysis.
+
+2. SALES TARGETS AND REPORTING
+2.1 Regional sales targets are set annually and reviewed quarterly against actuals by
+    product line and by city/region.
+2.2 Monthly regional sales data (city-wise, product-wise) must be submitted to the Sales
+    Analytics team by the 3rd working day of the following month.
+2.3 Any region showing more than 15% month-on-month decline must be flagged in the monthly
+    review with a root-cause note from the Regional Sales Manager.
+
+3. DEALER AND DISTRIBUTOR NETWORK
+3.1 Dealer performance is reviewed quarterly against target set at the start of the fiscal
+    year.
+3.2 A dealer below 70% of quarterly target for two consecutive quarters is placed under a
+    Performance Improvement Plan by the Regional Sales Manager.
+3.3 A dealer below 50% of target for two consecutive quarters is escalated to the Zonal
+    Head for contract review, which may include territory reassignment.
+
+4. PRICING AND DISCOUNT APPROVAL
+4.1 Discounts up to 3% off list price may be approved directly by the Regional Sales
+    Manager.
+4.2 Discounts of 3-7% require Zonal Head approval with written justification.
+4.3 Discounts above 7% require Head of Sales approval and are logged in the quarterly
+    discount exception report; no discount above 15% is permitted without CFO sign-off.
+
+5. MARKETING AND CAMPAIGN MANAGEMENT
+5.1 Campaigns are evaluated on ROI (return on ad spend) at the 30-day and 90-day marks
+    post-launch, reconciled against actual sales conversion, not platform-reported clicks
+    alone.
+5.2 A campaign with ROI below 1.2x at the 90-day mark is flagged for review and requires
+    justification before further budget is released.
+5.3 All external-facing marketing material must be reviewed by Corporate Communications
+    before publication for brand and regulatory compliance.
+
+6. MARKET RESEARCH AND COMPETITIVE INTELLIGENCE
+6.1 Competitor and market study reports are to be summarized and circulated to the
+    Commercial Committee on a quarterly basis.
+6.2 Any significant competitor pricing move (greater than 5% price change) must be flagged
+    to the Head of Sales within 48 hours of being identified.
+
+7. CUSTOMER FEEDBACK AND SENTIMENT
+7.1 Customer feedback and survey data is reviewed monthly to identify recurring themes and
+    complaint categories.
+7.2 Any complaint theme affecting more than 10% of respondents in a given month is escalated
+    to the relevant product/service owner for a corrective action plan.
+
+END OF SALES-GEN-001

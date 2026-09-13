@@ -1,0 +1,55 @@
+MRPL INFORMATION TECHNOLOGY DEPARTMENT
+GENERAL OPERATING PROCEDURE — IT-GEN-001
+Effective Date: 01-Jun-2025 | Review Cycle: Annual | Owner: Head of IT Infrastructure
+
+1. DEPARTMENT SCOPE
+This department covers application development, DevOps/infrastructure, cybersecurity and
+incident response, customer/employee support (helpdesk), code review, and internal data
+and analytics requests.
+
+2. INCIDENT SEVERITY AND RESPONSE
+2.1 Severity 1 (Critical, business-critical system down): 15-minute response, 4-hour
+    resolution target.
+2.2 Severity 2 (High, major functionality degraded): 1-hour response, 8 business-hour
+    resolution target.
+2.3 Severity 3 (Medium, single user/non-critical, workaround exists): 4 business-hour
+    response, 3 business-day resolution target.
+2.4 Severity 4 (Low, cosmetic/feature request): 1 business-day response, 10 business-day
+    resolution target.
+2.5 Any Severity 1 incident unresolved after 2 hours is escalated to the Head of IT
+    Infrastructure with hourly status updates required until resolution.
+
+3. CYBERSECURITY AND ACCESS MANAGEMENT
+3.1 More than 5 failed login attempts on a single account within 10 minutes triggers an
+    automatic account lock and a security alert to the SOC team.
+3.2 Security-related incidents (suspected breach, malware, unauthorized access) bypass
+    normal severity classification and are immediately escalated to the CISO.
+3.3 Access reviews for all critical systems (ERP, DCS interface, financial systems) are
+    conducted quarterly; any dormant account inactive for 90+ days is disabled automatically.
+
+4. APPLICATION DEVELOPMENT AND CODE REVIEW
+4.1 All production code changes require a peer-reviewed Pull Request before merge; no
+    direct commits to the production branch are permitted.
+4.2 Security-sensitive code changes (authentication, payment, data access) require a
+    second reviewer with security review experience.
+4.3 Automated test coverage must not decrease as a result of any merged change.
+
+5. CHANGE MANAGEMENT AND DEPLOYMENT
+5.1 All production deployments require a Change Request approved by the Change Advisory
+    Board at least 48 hours in advance, except emergency security patches.
+5.2 Any deployment causing a Severity 1 or Severity 2 incident within 24 hours of release
+    must be rolled back immediately and reviewed at the next Change Advisory Board meeting.
+
+6. SYSTEM UPTIME AND SLA TARGETS
+6.1 Core business systems (ERP, email, DCS interface) carry a 99.5% monthly uptime target.
+6.2 Non-critical internal tools carry a 98% monthly uptime target.
+6.3 Any month falling below target requires a root-cause report to the IT Steering
+    Committee within 5 working days of month end.
+
+7. HELPDESK AND SUPPORT
+7.1 Ticket categorization is reviewed monthly to identify the most common issue categories
+    and drive proactive fixes.
+7.2 Recurring ticket categories exceeding 20% of total monthly volume trigger a review for
+    a permanent fix or self-service solution.
+
+END OF IT-GEN-001

@@ -1,0 +1,18 @@
+{
+  "ollama": {
+    "base_url": "http://localhost:11434",
+    "generate_endpoint": "/api/generate",
+    "tags_endpoint": "/api/tags",
+    "timeout": 180
+  },
+  "models": {
+    "general": "llama3.2:3b",
+    "coding": "qwen2.5-coder:1.5b",
+    "vision": "llava:7b"
+  },
+  "deployment": {
+    "mode": "offline-air-gapped",
+    "cloud_ai": false,
+    "external_api": false
+  }
+}

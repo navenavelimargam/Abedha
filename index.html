@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orion — Sovereign Workbench</title>
+<style>
+:root{--bg:#050505;--bg2:#0a0a0a;--panel:#111;--panel2:#171717;--line:#292929;--text:#f5f5f5;--muted:#929292;--pink:#ec4899;--purple:#a855f7;--green:#34d399;--yellow:#facc15;--red:#f87171;--gradient:linear-gradient(135deg,#ec4899,#a855f7)}
+body.light{--bg:#f7f7f8;--bg2:#fff;--panel:#fff;--panel2:#f2f2f2;--line:#ddd;--text:#18181b;--muted:#666}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}button,input{font:inherit}button{cursor:pointer}
+
+:root{--bg:#050505;--bg2:#0a0a0a;--panel:#111;--panel2:#171717;--line:#292929;--text:#f5f5f5;--muted:#929292;--pink:#ec4899;--purple:#a855f7;--green:#34d399;--yellow:#facc15;--red:#f87171;--gradient:linear-gradient(135deg,#ec4899,#a855f7)}
+body.light{--bg:#f7f7f8;--bg2:#fff;--panel:#fff;--panel2:#f2f2f2;--line:#ddd;--text:#18181b;--muted:#666}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}button,input{font:inherit}button{cursor:pointer}
+.hidden{display:none!important}.muted{color:var(--muted)}
+#login{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 25% 20%,rgba(236,72,153,.12),transparent 40%),radial-gradient(circle at 80% 75%,rgba(168,85,247,.14),transparent 45%),#050505}
+.login-card{width:min(420px,92vw);background:#0c0c0c;border:1px solid #292929;border-radius:20px;padding:30px;box-shadow:0 30px 100px rgba(0,0,0,.6)}
+.login-logo{font-size:23px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent}.login-sub{font-size:13px;color:#999;margin:8px 0 25px;line-height:1.5}.field{margin:13px 0}.field label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#888;margin-bottom:7px}.field input{width:100%;padding:12px 13px;border-radius:10px;border:1px solid #303030;background:#151515;color:#fff;outline:none}.field input:focus{border-color:var(--purple)}.primary{width:100%;border:0;border-radius:10px;padding:12px;background:var(--gradient);color:#190914;font-weight:800;margin-top:8px}.error{color:var(--red);font-size:12px;margin-top:12px;min-height:18px}.secure-note{margin-top:20px;border:1px solid rgba(52,211,153,.25);background:rgba(52,211,153,.06);padding:10px;border-radius:10px;font-size:11px;color:var(--green)}
+
+/* EXACT WHITE / PURPLE / BLUE SUBTLE GRADIENT FOR ROBOT SPLASH */
+#splash{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 20%, rgba(168,85,247,0.18) 0%, rgba(14,20,38,0.92) 50%, #030712 100%);overflow:hidden;transition:opacity .8s ease,visibility .8s ease}
+#splash.hide{opacity:0;visibility:hidden;pointer-events:none}
+.splash-stars{position:absolute;inset:0;opacity:.5;pointer-events:none}.splash-stars span{position:absolute;width:2px;height:2px;border-radius:50%;background:#cfe0ff;opacity:0;animation:twinkle 3.4s ease-in-out infinite}@keyframes twinkle{0%,100%{opacity:0}50%{opacity:.9}}
+.robot-stage{position:relative;width:280px;height:280px;animation:robotFloat 3.6s ease-in-out infinite}.robot-glow{position:absolute;inset:-30px;background:radial-gradient(circle,rgba(168,85,247,0.25) 0%,transparent 70%);filter:blur(6px);animation:glowPulse 3.6s ease-in-out infinite}.robot-shadow{position:absolute;left:50%;bottom:6px;width:120px;height:18px;transform:translateX(-50%);background:radial-gradient(ellipse at center,rgba(168,85,247,0.3) 0%,transparent 72%);border-radius:50%;animation:shadowPulse 3.6s ease-in-out infinite}@keyframes robotFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}@keyframes shadowPulse{0%,100%{transform:translateX(-50%) scale(1);opacity:.55}50%{transform:translateX(-50%) scale(.78);opacity:.3}}@keyframes glowPulse{0%,100%{opacity:.5}50%{opacity:1}}
+#armRight{transform-origin:150px 150px;animation:wave 2.4s ease-in-out infinite;animation-delay:.6s}@keyframes wave{0%,60%,100%{transform:rotate(0)}10%{transform:rotate(-18deg)}20%{transform:rotate(6deg)}30%{transform:rotate(-14deg)}40%{transform:rotate(4deg)}50%{transform:rotate(-8deg)}}#eyeL,#eyeR{animation:blink 4.2s ease-in-out infinite;transform-origin:center}#eyeR{animation-delay:.06s}@keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.12)}}#visorGlow{animation:visorPulse 2.6s ease-in-out infinite}@keyframes visorPulse{0%,100%{opacity:.55}50%{opacity:1}}#antennaTip{animation:antennaPulse 1.8s ease-in-out infinite}@keyframes antennaPulse{0%,100%{opacity:.4}50%{opacity:1}}
+.splash-text{position:relative;z-index:2;text-align:center;margin-top:22px;opacity:0;animation:textIn 1s ease forwards;animation-delay:.9s}@keyframes textIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}.splash-welcome{font-size:13px;letter-spacing:2.5px;color:var(--muted);text-transform:uppercase;margin-bottom:8px}.splash-brand{font-size:30px;font-weight:800;letter-spacing:.5px}.splash-brand span{color:var(--accent,#a855f7)}.splash-quote{margin-top:16px;max-width:520px;padding:0 24px;font-size:14px;line-height:1.6;color:#e2e8f0;font-style:italic;opacity:0;animation:textIn 1s ease forwards;animation-delay:1.6s}.splash-quote::before,.splash-quote::after{content:'"';color:var(--accent,#a855f7);font-style:normal}.splash-enter{margin-top:26px;opacity:0;animation:textIn 1s ease forwards;animation-delay:2.3s}.splash-enter button{padding:12px 26px;border:1px solid #a855f7;border-radius:10px;background:var(--gradient);color:#fff;font-weight:800;font-size:13px;letter-spacing:.4px}.splash-enter button:hover{opacity:.9}.splash-skip{position:absolute;top:20px;right:22px;z-index:3;color:#91a0b5;font-size:12px;background:transparent;border:1px solid #263246;padding:7px 12px;border-radius:8px}.splash-skip:hover{color:#e8edf5;border-color:#334159}
+
+/* REST OF UI STYLING */
+#app{display:grid;grid-template-columns:280px minmax(0,1fr);height:100vh}
+.sidebar{min-height:0;overflow:hidden;background:var(--bg2);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:16px;gap:12px}.brand{display:flex;align-items:center;justify-content:space-between;font-weight:800;font-size:16px}.brand-left{display:flex;align-items:center;gap:9px}.brand-dot{width:9px;height:9px;border-radius:50%;background:var(--gradient);box-shadow:0 0 12px rgba(236,72,153,.7)}.icon-btn{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--muted)}.icon-btn:hover{border-color:var(--pink);color:var(--pink)}
+.secure{font-size:10px;text-align:center;padding:7px 8px;border:1px solid rgba(52,211,153,.25);background:rgba(52,211,153,.06);color:var(--green);border-radius:8px;letter-spacing:.05em}.profile{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:10px}.profile .name{font-weight:700;font-size:13px}.profile .meta{font-size:11px;color:var(--muted);line-height:1.6;margin-top:4px}.new-chat{border:1px solid var(--line);background:transparent;color:var(--text);border-radius:9px;padding:10px;font-weight:700}.new-chat:hover{border-color:var(--pink);background:rgba(236,72,153,.06)}.section-title{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:4px 4px 2px}
+.chat-list,.team-list{overflow-x:hidden;overflow-y:auto;min-height:0;padding:0 2px;scrollbar-width:thin}.chat-list{flex:1 1 auto;min-height:120px}.team-list{flex:0 1 150px;max-height:150px}.chat-item{display:flex;align-items:center;gap:8px;width:100%;border:1px solid transparent;background:transparent;color:var(--text);padding:9px 9px;border-radius:8px;text-align:left;margin-bottom:3px}.chat-item:hover{background:var(--panel);border-color:var(--line)}.chat-item.active{background:rgba(168,85,247,.12);border-color:rgba(168,85,247,.35)}.chat-item .dot{width:6px;height:6px;border-radius:50%;background:#555;flex:none}.chat-item.active .dot{background:var(--purple)}.chat-item .title{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}.chat-item .team-tag{margin-left:auto;font-size:9px;color:var(--green)}
+.empty-list{font-size:11px;color:#666;padding:8px}
+.sidebar-nav{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.side-nav-btn{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:9px;padding:9px 8px;text-align:left;font-size:11px}
+.side-nav-btn:hover{border-color:var(--purple);color:var(--text);background:rgba(168,85,247,.06)}
+.file-cards{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px}
+.file-card{display:flex;align-items:center;gap:9px;min-width:210px;max-width:320px;padding:8px 10px;border:1px solid var(--line);background:var(--panel2);border-radius:10px;color:var(--text);text-decoration:none}
+.file-card:hover{border-color:var(--purple)}
+.file-icon{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;background:rgba(168,85,247,.12);font-size:15px;flex:none}
+.file-card-name{font-size:11px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file-card-meta{font-size:9px;color:var(--muted);margin-top:2px}
+.sender-label{font-size:11px;font-weight:800;margin-bottom:5px;color:var(--text)}
+.sender-email{font-size:9px;color:var(--muted);font-weight:500;margin-left:5px}
+.message.user .sender-label{text-align:right}
+.user-content{white-space:pre-wrap}
+.assistant-body{white-space:pre-wrap}
+.library-list{max-height:430px;overflow:auto;display:grid;gap:7px}
+.library-item{display:flex;justify-content:space-between;gap:10px;align-items:center;border:1px solid var(--line);background:var(--panel2);padding:10px;border-radius:9px}
+.library-item .name{font-size:12px;font-weight:700}.library-item .meta{font-size:9px;color:var(--muted);margin-top:3px}
+.settings-row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:12px}.settings-row:last-child{border-bottom:0}.settings-value{color:var(--green);text-align:right;word-break:break-word}
+
+.sidebar-bottom{border-top:1px solid var(--line);padding-top:10px}.status-row{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--muted);margin:5px 0}.status-ok{color:var(--green)}.logout{width:100%;margin-top:8px;border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:8px;padding:8px}.logout:hover{border-color:var(--red);color:var(--red)}
+main{min-width:0;height:100vh;display:flex;flex-direction:column;background:var(--bg);position:relative}.header{height:62px;flex:none;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 22px}.header-title{font-weight:800}.header-title span{background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent}.header-right{display:flex;align-items:center;gap:12px;font-size:11px;color:var(--muted)}.mode-pill{border:1px solid rgba(52,211,153,.25);background:rgba(52,211,153,.05);color:var(--green);padding:6px 9px;border-radius:20px}
+.workspace{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:24px 25px 150px;scroll-behavior:auto}.hero{max-width:850px;margin:10vh auto 0;text-align:center}.hero h1{font-size:clamp(30px,5vw,48px);margin:0;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{color:var(--muted);line-height:1.6;font-size:14px}.hint-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:25px}.hint{border:1px solid var(--line);background:var(--panel);padding:14px;border-radius:12px;text-align:left;font-size:12px;color:var(--muted)}.hint strong{display:block;color:var(--text);margin-bottom:5px}
+.message{display:flex;margin:0 auto 16px;max-width:900px;width:100%}.message.user{justify-content:flex-end}.bubble{max-width:78%;padding:13px 15px;border:1px solid var(--line);border-radius:14px;background:var(--panel);font-size:14px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}.message.user .bubble{background:var(--gradient);color:#190914;border:0}.message.assistant .bubble{background:var(--panel)}.message-label{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:5px}.assistant-body{white-space:pre-wrap}.meta{display:flex;flex-wrap:wrap;gap:8px 14px;border-top:1px solid var(--line);margin-top:12px;padding-top:9px;font-size:10px;color:var(--muted)}.meta b{color:var(--pink)}.files-line{font-size:11px;color:var(--green);margin-top:9px}.artifact{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.artifact a{border:1px solid var(--purple);background:rgba(168,85,247,.1);color:#d8b4fe;text-decoration:none;padding:7px 10px;border-radius:8px;font-size:11px}.artifact img{max-width:100%;border-radius:10px;border:1px solid var(--line);margin-top:8px}img.artifact{display:block;width:auto;height:auto;max-width:320px;max-height:240px;object-fit:contain;border-radius:10px;border:1px solid var(--line);margin-top:8px;cursor:zoom-in;background:var(--panel2)}.danger-note{color:var(--red);font-size:11px}
+.composer-wrap{position:absolute;bottom:0;left:0;right:0;padding:12px 22px 20px;background:linear-gradient(to top,var(--bg) 78%,transparent)}.attachment{max-width:900px;margin:0 auto 8px;border:1px solid rgba(52,211,153,.3);background:var(--panel);border-radius:10px;padding:8px 11px;font-size:11px;color:var(--green);display:none;align-items:center;justify-content:space-between}.attachment button{border:0;background:transparent;color:var(--red);font-size:18px}.composer{max-width:900px;margin:auto;display:flex;align-items:center;gap:9px;background:var(--panel);border:1px solid var(--line);border-radius:28px;padding:7px 8px 7px 13px}.composer:focus-within{border-color:var(--purple)}.upload{font-size:18px;color:var(--muted);cursor:pointer}.upload input{display:none}.composer input[type=text]{flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--text);padding:9px 4px;font-size:14px}.send{width:39px;height:39px;border:0;border-radius:50%;background:var(--gradient);font-weight:900;color:#190914}.composer.disabled{opacity:.45;pointer-events:none}.composer-note{max-width:900px;margin:6px auto 0;text-align:center;font-size:10px;color:#666}
+.modal{position:fixed;inset:0;z-index:120;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center}.modal-card{width:min(500px,92vw);background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px}.modal-head{display:flex;justify-content:space-between;align-items:center}.modal-head h3{margin:0}.close{border:0;background:transparent;color:var(--muted);font-size:22px}.admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.register-switch{display:flex;gap:7px;margin:15px 0}.register-switch button{flex:1;border:1px solid #303030;background:#151515;color:#aaa;border-radius:9px;padding:9px}.register-switch button.active{border-color:var(--purple);color:#fff;background:rgba(168,85,247,.12)}.request-card{border:1px solid var(--line);border-radius:10px;padding:10px;margin:8px 0;background:var(--panel2)}.request-card strong{display:block;margin-bottom:4px}.request-actions{display:flex;gap:7px;margin-top:8px}.request-actions button{flex:1}.member-list{max-height:220px;overflow:auto;border:1px solid var(--line);border-radius:10px;padding:6px}.member-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px;border-bottom:1px solid var(--line);font-size:12px}.member-row:last-child{border-bottom:0}.small-btn{border:1px solid var(--line);background:transparent;color:var(--text);border-radius:7px;padding:6px 9px;font-size:11px}.admin-actions{margin-top:14px;display:flex;gap:8px}.admin-actions button{flex:1}.team-section{margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}.team-section h4{margin:0 0 8px;font-size:12px}.team-code{font-family:ui-monospace,monospace;font-size:12px;color:var(--green);background:var(--panel2);padding:8px;border-radius:8px;border:1px solid var(--line);word-break:break-all}.member-check{display:flex;align-items:center;gap:8px;padding:7px;border-bottom:1px solid var(--line);font-size:11px}.member-check:last-child{border-bottom:0}.member-check input{accent-color:#a855f7}.team-actions{display:flex;gap:8px;margin-top:9px}.team-actions button{flex:1}
+@media(max-width:850px){#app{grid-template-columns:220px minmax(0,1fr)}.hint-grid{grid-template-columns:1fr}.bubble{max-width:90%}.header-right .mode-pill{display:none}}
+@media(max-width:650px){.robot-stage{width:220px;height:220px}.robot-stage svg{width:220px;height:220px}.splash-brand{font-size:24px}.splash-quote{font-size:13px}}
+@media(max-width:650px){#app{grid-template-columns:1fr}.sidebar{display:none}.header{padding:0 14px}.workspace{padding:18px 12px 145px}.composer-wrap{padding:10px 10px 15px}}
+
+/* GLOBAL THEME CONTROL — visible before login and on splash */
+.global-theme{position:fixed;top:18px;right:20px;z-index:500;width:42px;height:42px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.10);backdrop-filter:blur(14px);color:var(--text);font-size:18px;cursor:pointer;box-shadow:0 8px 30px rgba(0,0,0,.18)}
+.global-theme:hover{border-color:var(--purple);transform:translateY(-1px)}
+.splash-controls{position:absolute;top:0;right:0;z-index:5}
+.splash-controls .global-theme{right:74px}
+body.light #login{background:radial-gradient(circle at 20% 20%,rgba(168,85,247,.20),transparent 40%),radial-gradient(circle at 80% 80%,rgba(96,165,250,.16),transparent 42%),linear-gradient(135deg,#fff 0%,#faf7ff 45%,#f3e8ff 100%)}
+body.light .login-card{background:rgba(255,255,255,.94);border-color:#ddd0f5;box-shadow:0 30px 100px rgba(91,33,182,.15)}
+body.light .field input{background:#fff;color:#18181b;border-color:#ddd0f5}
+body.light .register-switch button{background:#faf7ff;color:#6b5a7d;border-color:#ddd0f5}
+body.light .register-switch button.active{background:rgba(168,85,247,.10);color:#5b21b6;border-color:rgba(168,85,247,.35)}
+body.light #splash{background:radial-gradient(circle at 50% 18%,rgba(168,85,247,.22),transparent 42%),linear-gradient(135deg,#fff 0%,#faf7ff 52%,#ede9fe 100%)}
+body.light .splash-welcome,body.light .splash-quote{color:#6b5a7d}
+body.light .splash-brand{color:#2f174e}
+body.light .splash-skip{color:#6b5a7d;border-color:#ddd0f5}
+.artifact-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.artifact-actions a,.artifact-actions button{border:1px solid var(--purple);background:rgba(168,85,247,.10);color:#d8b4fe;text-decoration:none;padding:7px 10px;border-radius:8px;font-size:11px;cursor:pointer}
+body.light .artifact-actions a,body.light .artifact-actions button{color:#5b21b6;background:rgba(124,58,237,.07)}
+.answer-tools{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.answer-tools button{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:8px;padding:7px 10px;font-size:11px}
+.answer-tools button:hover{border-color:var(--purple)}
+.artifact img{width:auto;max-width:320px;max-height:240px;object-fit:contain}
+@media(max-width:650px){.global-theme{top:12px;right:12px;width:38px;height:38px}.splash-controls .global-theme{right:62px}.bubble{max-width:94%}}
+/* PROFESSIONAL ORION LIGHT THEME */
+body.light{
+  --bg:#f8f5ff;--bg2:rgba(255,255,255,.78);--panel:rgba(255,255,255,.88);--panel2:rgba(246,240,255,.82);
+  --line:rgba(91,33,182,.14);--text:#24143b;--muted:#6d5c7d;
+  background:linear-gradient(135deg,#ffffff 0%,#fbf7ff 28%,#f2e8ff 58%,#eadcff 78%,#ffffff 100%);
+}
+body.light::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background:
+  radial-gradient(circle at 12% 18%,rgba(168,85,247,.18),transparent 32%),
+  radial-gradient(circle at 88% 78%,rgba(124,58,237,.13),transparent 30%),
+  linear-gradient(135deg,rgba(255,255,255,.55),rgba(233,213,255,.18));}
+body.light #app,body.light main{background:transparent}
+body.light .sidebar{background:rgba(255,255,255,.66);backdrop-filter:blur(22px);border-right-color:rgba(91,33,182,.13)}
+body.light .header{background:rgba(255,255,255,.42);backdrop-filter:blur(18px);border-bottom-color:rgba(91,33,182,.13)}
+body.light .workspace{background:transparent}
+body.light .message.assistant .bubble{background:linear-gradient(145deg,#2b1248 0%,#4c1d78 58%,#35125b 100%);color:#fff;border-color:rgba(255,255,255,.12);box-shadow:0 16px 42px rgba(76,29,120,.18)}
+body.light .message.assistant .bubble .sender-label{color:#fff}
+body.light .message.assistant .bubble .assistant-body{color:#f8f2ff}
+body.light .message.assistant .bubble .meta{border-top-color:rgba(255,255,255,.16);color:#d9c7e8}
+body.light .message.assistant .bubble .meta b{color:#f0abff}
+body.light .message.assistant .bubble .files-line{color:#86efac}
+body.light .composer-wrap{background:linear-gradient(to top,rgba(248,245,255,.96) 72%,transparent)}
+body.light .composer{background:rgba(255,255,255,.90);border-color:rgba(91,33,182,.18);box-shadow:0 14px 38px rgba(91,33,182,.12);backdrop-filter:blur(18px)}
+body.light .hint,body.light .library-item,body.light .profile,body.light .modal-card{background:rgba(255,255,255,.78);backdrop-filter:blur(18px)}
+body.light .suggestion-card{background:rgba(255,255,255,.66);border-color:rgba(91,33,182,.14)}
+body.light .suggestion-card:hover{background:rgba(255,255,255,.9);border-color:rgba(124,58,237,.35);transform:translateY(-2px)}
+body.light .artifact-actions a,body.light .artifact-actions button{background:linear-gradient(135deg,rgba(124,58,237,.13),rgba(168,85,247,.08));border-color:rgba(124,58,237,.28);color:#5b21b6}
+body.light .send{color:#fff}
+body.light .hero h1{filter:drop-shadow(0 8px 24px rgba(124,58,237,.12))}
+
+
+/* ORION POLISHED LIGHT CHAT */
+body.light .message.user .bubble{background:linear-gradient(135deg,#35115f 0%,#542080 55%,#7c3aed 100%);color:#fff;box-shadow:0 12px 30px rgba(76,29,120,.16)}
+body.light .message.user .bubble .sender-label{color:#f5d0fe}
+body.light .artifact-actions{padding:8px;border-radius:12px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.12)}
+body.light .artifact-actions button{background:rgba(255,255,255,.11);color:#fff;border-color:rgba(255,255,255,.26);font-weight:600;box-shadow:0 5px 16px rgba(0,0,0,.08)}
+body.light .artifact-actions button:hover{background:rgba(255,255,255,.19);border-color:rgba(255,255,255,.5);transform:translateY(-1px)}
+body.light .message.assistant .artifact{padding:10px;border-radius:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.10)}
+body.light .message.assistant img.artifact{max-width:min(680px,100%);max-height:460px;background:#fff;border-color:rgba(255,255,255,.2);box-shadow:0 14px 36px rgba(0,0,0,.18)}
+body.light .composer input[type=text]::placeholder{color:#8a7899}
+body.light .composer-note{color:#776686}
+
+/* Download controls */
+.answer-tools .download-docx{border-color:rgba(168,85,247,.55);background:rgba(168,85,247,.12)}
+.download-busy{opacity:.65!important;pointer-events:none}
+</style>
+</head>
+<body>
+<div id="login" class="hidden">
+  <button class="global-theme" id="loginThemeBtn" onclick="toggleTheme()" title="Toggle light/dark theme">🌙</button>
+  <div class="login-card">
+    <div class="login-logo">ORION — SOVEREIGN WORKBENCH</div>
+    <div class="login-sub">Secure local enterprise workspace. Accounts, approvals, notifications and document processing are handled by the local application.</div>
+    <div class="register-switch">
+      <button id="loginTab" class="active" onclick="showAuthMode('login')">Sign in</button>
+      <button id="employeeTab" onclick="showAuthMode('employee')">Employee register</button>
+      <button id="adminTab" onclick="showAuthMode('admin')">Admin register</button>
+    </div>
+    <form id="loginForm" onsubmit="login(event)">
+      <div class="field"><label>Email</label><input id="loginEmail" type="email" autocomplete="username" placeholder="Enter your email" required></div>
+      <div class="field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Enter password" required></div>
+      <button class="primary" type="submit">Sign in</button>
+      <div class="error" id="loginError"></div>
+    </form>
+    <form id="registerForm" class="hidden" onsubmit="registerAccount(event)">
+      <div class="field"><label>Name</label><input id="regName" required placeholder="Full name"></div>
+      <div class="field"><label>Email</label><input id="regEmail" type="email" required placeholder="Work email"></div>
+      <div class="field"><label>Password</label><input id="regPassword" type="password" required placeholder="Create password"></div>
+      <div class="field"><label>Company</label><input id="regCompany" required placeholder="Organization / company"></div>
+      <div class="field" id="regSectorWrap"><label>Sector</label><input id="regSector" placeholder="Engineering, Finance, IT…"></div>
+      <button class="primary" type="submit" id="registerSubmit">Register employee</button>
+      <div class="error" id="registerError"></div>
+    </form>
+    <div class="secure-note">● LOCAL / AIR-GAPPED · Registration requests and approval notifications remain inside the organization's local backend.</div>
+  </div>
+</div>
+
+<div id="splash">
+  <div class="splash-controls"><button class="global-theme" id="splashThemeBtn" onclick="toggleTheme()" title="Toggle light/dark theme">🌙</button><button class="splash-skip" onclick="leaveSplash(event)">Skip</button></div>
+  <div class="splash-stars" id="splashStars"></div>
+  <div class="robot-stage">
+    <div class="robot-glow"></div><div class="robot-shadow"></div>
+    <svg viewBox="0 0 300 300" width="280" height="280" aria-label="Orion robot">
+      <defs>
+        <linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#ffffff"/>
+          <stop offset="100%" stop-color="#ece3fb"/>
+        </linearGradient>
+        <linearGradient id="earGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#c4b5fd"/>
+          <stop offset="100%" stop-color="#f5b8dc"/>
+        </linearGradient>
+      </defs>
+      <line x1="150" y1="46" x2="150" y2="24" stroke="#c9b8fb" stroke-width="4" stroke-linecap="round"/>
+      <circle id="antennaTip" cx="150" cy="20" r="5" fill="#e9d8ff"/>
+      <circle cx="82" cy="118" r="22" fill="url(#earGrad)"/>
+      <circle cx="218" cy="118" r="22" fill="url(#earGrad)"/>
+      <circle cx="82" cy="118" r="10" fill="#fff" opacity=".55"/>
+      <circle cx="218" cy="118" r="10" fill="#fff" opacity=".55"/>
+      <rect x="92" y="58" width="116" height="108" rx="46" fill="url(#bodyGrad)" stroke="#e3d8fb" stroke-width="1.5"/>
+      <rect x="110" y="88" width="80" height="54" rx="24" fill="#241b3a"/>
+      <rect id="visorGlow" x="110" y="88" width="80" height="54" rx="24" fill="none" stroke="#b79bfa" stroke-width="1.5" opacity=".6"/>
+      <ellipse id="eyeL" cx="136" cy="115" rx="8" ry="10" fill="#f4ecff"/><ellipse id="eyeR" cx="164" cy="115" rx="8" ry="10" fill="#f4ecff"/>
+      <path d="M 136 132 Q 150 140 164 132" stroke="#b79bfa" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <rect x="138" y="160" width="24" height="14" rx="6" fill="#e3d8fb"/>
+      <rect x="84" y="170" width="132" height="100" rx="38" fill="url(#bodyGrad)" stroke="#e3d8fb" stroke-width="1.5"/>
+      <circle cx="150" cy="214" r="13" fill="url(#earGrad)"/><circle cx="150" cy="214" r="5" fill="#fff"/>
+      <g><rect x="62" y="196" width="22" height="46" rx="11" fill="#d9cdfa"/><circle cx="73" cy="248" r="14" fill="url(#bodyGrad)" stroke="#e3d8fb" stroke-width="1.5"/></g>
+      <g id="armRight"><rect x="216" y="196" width="22" height="46" rx="11" fill="#d9cdfa"/><circle cx="227" cy="248" r="14" fill="url(#bodyGrad)" stroke="#e3d8fb" stroke-width="1.5"/></g>
+      <ellipse cx="150" cy="284" rx="46" ry="10" fill="#c4b5fd" opacity=".3"/>
+    </svg>
+  </div>
+  <div class="splash-text">
+    <div class="splash-welcome">Welcome to</div>
+    <div class="splash-brand"><span>Orion</span> — Sovereign Workbench</div>
+    <div class="splash-quote">Thinking locally. Working globally.</div>
+    <div class="splash-enter"><button onclick="leaveSplash(event)">Enter Workbench</button></div>
+  </div>
+</div>
+
+<div id="app" class="hidden">
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-left"><span class="brand-dot"></span>Orion <span style="font-weight:500;color:var(--muted);font-size:11px;margin-left:3px">· Sovereign Workbench</span></div><button class="icon-btn" onclick="toggleTheme()" id="themeBtn">🌙</button></div>
+    <div class="secure">NETWORK: LOCAL / AIR-GAPPED MODE</div>
+    <div class="profile"><div class="name" id="profileName">—</div><div class="meta" id="profileMeta">—</div></div>
+    <button class="new-chat" onclick="newChat()">＋ New Chat</button>
+    <div class="sidebar-nav">
+      <button class="side-nav-btn" onclick="openProfile()">👤 Profile</button>
+      <button class="side-nav-btn" onclick="openLibrary()">📚 Library</button>
+      <button class="side-nav-btn" onclick="openTeamChatNav()">👥 Team Chat</button>
+      <button class="side-nav-btn" onclick="openSettings()">⚙ Settings</button>
+    </div>
+
+    <div class="section-title">Chats</div>
+    <div class="chat-list" id="chatList"></div>
+
+    <div class="section-title">Team Chats</div>
+    <div class="team-list" id="teamList"></div>
+
+    <div class="sidebar-bottom">
+      <div class="status-row"><span>Ollama</span><span id="ollamaStatus">checking…</span></div>
+      <div class="status-row"><span>Model</span><span id="modelStatus">dynamic</span></div>
+      <div class="status-row"><span>Current chat</span><span id="chatStatus">new</span></div>
+      <button class="logout" onclick="logout()">Sign out</button>
+      <button class="logout hidden" id="adminBtn" onclick="openAdmin()">Admin: Registration & Employees</button>
+      <button class="logout hidden" id="teamAdminBtn" onclick="openTeamManager()">Team Management</button>
+    </div>
+  </aside>
+
+  <main>
+    <header class="header">
+      <div class="header-title"><span id="headerTitle">Orion — Sovereign Workbench</span></div>
+      <div class="header-right"><span class="mode-pill">100% Local Processing</span><span id="headerProfile">—</span></div>
+    </header>
+
+    <section class="workspace" id="workspace">
+      <div class="hero" id="hero">
+        <h1>Orion — Sovereign Workbench</h1>
+        <div style="margin-top:6px;color:var(--purple);font-weight:700;font-size:12px">Thinking locally. Working globally.</div>
+        <p>Upload a confidential enterprise document and ask a question. The backend retrieves relevant evidence before sending context to a locally available model.</p>
+        <div class="hint-grid">
+          <div class="hint"><strong>Document Q&A</strong>Ask grounded questions about PDF, DOCX, PPTX, TXT or Markdown files.</div>
+          <div class="hint"><strong>Data Analysis</strong>Upload CSV/Excel files for deterministic local analysis and verified charts.</div>
+          <div class="hint"><strong>Visual Reasoning</strong>Use images or technical drawings when visual evidence is actually required.</div>
+        </div>
+      </div>
+      <div id="chat"></div>
+    </section>
+
+    <div class="composer-wrap">
+      <div class="attachment" id="attachment"><span>📎 <strong id="attachmentName"></strong></span><button onclick="clearFiles()">×</button></div>
+      <div class="composer disabled" id="composer">
+        <label class="upload" title="Upload files">📎<input id="fileInput" type="file" multiple accept=".pdf,.docx,.pptx,.xlsx,.xls,.csv,.md,.txt,.json,.log,.png,.jpg,.jpeg,.webp,.html" onchange="handleFileSelect()"></label>
+        <input id="query" type="text" placeholder="Upload a file, then ask a question…" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}">
+        <button class="send" onclick="sendMessage()">➤</button>
+      </div>
+      <div class="composer-note">The first request or uploaded filename is used to create an intelligent chat title automatically.</div>
+    </div>
+  </main>
+</div>
+
+<div class="modal hidden" id="profileModal">
+  <div class="modal-card">
+    <div class="modal-head"><h3>Profile</h3><button class="close" onclick="closeModal('profileModal')">×</button></div>
+    <div class="settings-row"><span>Name</span><span class="settings-value" id="profileModalName">—</span></div>
+    <div class="settings-row"><span>Email</span><span class="settings-value" id="profileModalEmail">—</span></div>
+    <div class="settings-row"><span>Company</span><span class="settings-value" id="profileModalCompany">—</span></div>
+    <div class="settings-row"><span>Sector</span><span class="settings-value" id="profileModalSector">—</span></div>
+    <div class="settings-row"><span>Role</span><span class="settings-value" id="profileModalRole">—</span></div>
+  </div>
+</div>
+
+<div class="modal hidden" id="libraryModal">
+  <div class="modal-card">
+    <div class="modal-head"><h3>Library</h3><button class="close" onclick="closeModal('libraryModal')">×</button></div>
+    <div style="font-size:11px;color:var(--muted);margin:10px 0">Files available to your account and team chats.</div>
+    <div id="libraryList" class="library-list"></div>
+  </div>
+</div>
+
+<div class="modal hidden" id="settingsModal">
+  <div class="modal-card">
+    <div class="modal-head"><h3>Settings</h3><button class="close" onclick="closeModal('settingsModal')">×</button></div>
+    <div class="settings-row"><span>Processing mode</span><span class="settings-value">LOCAL / AIR-GAPPED</span></div>
+    <div class="settings-row"><span>Ollama</span><span class="settings-value" id="settingsOllama">checking…</span></div>
+    <div class="settings-row"><span>Resolved model</span><span class="settings-value" id="settingsModel">dynamic</span></div>
+    <div class="settings-row"><span>Installed local models</span><span class="settings-value" id="settingsModels">—</span></div>
+    <div class="settings-row"><span>Chat</span><span class="settings-value">Persistent in local SQLite</span></div>
+    <div class="settings-row"><span>Evidence policy</span><span class="settings-value">Source-grounded</span></div>
+    <div style="margin-top:12px;font-size:10px;color:var(--muted)">The interface does not send documents or prompts to external AI providers.</div>
+  </div>
+</div>
+
+<div class="modal hidden" id="adminModal">
+  <div class="modal-card">
+    <div class="modal-head"><h3>Administrator Center</h3><button class="close" onclick="closeAdmin()">×</button></div>
+    <div style="margin-top:12px;font-size:12px;color:var(--muted)">Pending employee registrations</div>
+    <div id="pendingRequests" style="margin-top:8px"></div>
+    <div style="margin-top:14px;font-size:12px;color:var(--muted)">Create employee directly</div>
+    <div class="admin-grid" style="margin-top:8px">
+      <div class="field"><label>Name</label><input id="newEmployeeName"></div>
+      <div class="field"><label>Email</label><input id="newEmployeeEmail" type="email"></div>
+      <div class="field"><label>Password</label><input id="newEmployeePassword" type="password"></div>
+      <div class="field"><label>Sector</label><input id="newEmployeeSector"></div>
+    </div>
+    <div class="admin-actions"><button class="new-chat" onclick="closeAdmin()">Close</button><button class="primary" onclick="createEmployee()">Create approved employee</button></div>
+    <div class="error" id="adminError"></div>
+
+    <div class="team-section">
+      <h4>Add SOP / Knowledge Document</h4>
+      <div style="font-size:10px;color:var(--muted);margin-bottom:8px">Only administrators can add controlled SOP and reference documents to the local knowledge base.</div>
+      <div class="field"><label>Sector / scope</label><input id="sopSector" placeholder="e.g. Engineering, Finance, IT"></div>
+      <div class="field"><label>SOP file</label><input id="sopFileInput" type="file" accept=".pdf,.doc,.docx,.txt,.md"></div>
+      <div class="admin-actions"><button class="primary" onclick="uploadSOP()">Upload SOP</button></div>
+      <div class="error" id="sopError"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal hidden" id="teamModal">
+  <div class="modal-card">
+    <div class="modal-head"><h3>Team Chat</h3><button class="close" onclick="closeTeamManager()">×</button></div>
+
+    <div class="team-section" style="border-top:0;margin-top:0;padding-top:8px">
+      <h4>Create a team chat</h4>
+      <div class="field"><label>Team name</label><input id="teamName" placeholder="e.g. Engineering Review Team"></div>
+      <div style="font-size:11px;color:var(--muted);margin:6px 0">Select approved employees. You will automatically become the team owner.</div>
+      <div class="member-list" id="approvedEmployeeList"></div>
+      <div class="team-actions"><button class="primary" onclick="createTeamFromUI()">＋ Create Team Chat</button></div>
+    </div>
+
+    <div class="team-section">
+      <h4>Join an existing team</h4>
+      <div class="field"><label>Invite code</label><input id="joinTeamCode" placeholder="Enter team invite code"></div>
+      <div class="team-actions"><button class="new-chat" onclick="joinTeamFromUI()">Join Team</button></div>
+    </div>
+
+    <div class="team-section">
+      <h4>Current team</h4>
+      <div id="currentTeamInfo" class="empty-list">Select a team from the left sidebar.</div>
+      <div id="currentTeamMembers" class="member-list" style="margin-top:8px"></div>
+      <div style="font-size:11px;color:var(--muted);margin:8px 0 4px">Add approved employees to the selected team</div>
+      <div id="addTeamMembersList" class="member-list"></div>
+      <div class="team-actions"><button class="new-chat" onclick="addSelectedTeamMembers()">Add Selected Members</button><button class="new-chat" onclick="openSelectedTeamChat()">Open Team Chat</button></div>
+    </div>
+    <div class="admin-actions"><button class="new-chat" onclick="closeTeamManager()">Close</button></div>
+    <div class="error" id="teamError"></div>
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+let currentUser = null;
+let currentChatId = null;
+let currentTeamId = null;
+let selectedFiles = [];
+let splashSeen = false;
+
+(function buildSplashStars(){const box=$('splashStars');if(!box)return;let h='';for(let i=0;i<40;i++){h+=`<span style="left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${(Math.random()*3.4).toFixed(2)}s"></span>`;}box.innerHTML=h;})();
+
+async function api(url, options={}) {
+  const res = await fetch(url, options);
+  let data = null;
+  try { data = await res.json(); } catch (_) {}
+  if (res.status === 401) { showLogin(); throw new Error('Authentication required.'); }
+  if (!res.ok || (data && data.status === 'error')) throw new Error((data && data.message) || `Request failed (${res.status})`);
+  return data;
+}
+
+function esc(value) {
+  return String(value ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+}
+function scrollToBottom(){ const w=$('workspace'); w.scrollTop=w.scrollHeight; }
+async function downloadArtifact(url, filename='orion-output'){
+  if(!url)return;
+  try{
+    const res=await fetch(url);
+    if(!res.ok)throw new Error(`Download failed (${res.status})`);
+    const blob=await res.blob();
+    const objectUrl=URL.createObjectURL(blob);
+    const a=document.createElement('a');a.href=objectUrl;a.download=filename;a.style.display='none';
+    document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(objectUrl),1500);
+  }catch(err){alert(err.message||'Unable to download the file.');}
+}
+function downloadTextFile(filename,text){
+  const blob=new Blob([String(text||'')],{type:'text/plain;charset=utf-8'});
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename||'orion-response.txt';
+  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+async function downloadAnswerDocx(content,button){
+  if(button)button.classList.add('download-busy');
+  try{
+    const data=await api('/api/generate-answer-docx',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({content:String(content||'')})});
+    await downloadArtifact(data.download_url||data.file_url,data.filename||'orion-answer.docx');
+  }catch(err){alert(err.message||'Unable to create DOCX.');}
+  finally{if(button)button.classList.remove('download-busy');}
+}
+function resetWorkspaceScroll(){ $('workspace').scrollTop=0; }
+function leaveSplash(event){ if(event) event.stopPropagation(); $('splash').classList.add('hide'); splashSeen=true; setTimeout(()=>{ $('splash').classList.add('hidden'); $('login').classList.remove('hidden'); $('loginEmail').focus(); },800); }
+function enterWorkbench(){ leaveSplash(); }
+setTimeout(()=>{if(!$('splash').classList.contains('hide')) leaveSplash();},6500);
+
+function updateThemeButtons(){
+  const icon=document.body.classList.contains('light')?'☀️':'🌙';
+  ['themeBtn','loginThemeBtn','splashThemeBtn'].forEach(id=>{if($(id))$(id).textContent=icon;});
+}
+function toggleTheme(){
+  const isLight=!document.body.classList.contains('light');
+  document.body.classList.toggle('light',isLight);
+  localStorage.setItem('sovereign_theme',isLight?'light':'dark');
+  updateThemeButtons();
+}
+function applyTheme(){
+  const saved=localStorage.getItem('sovereign_theme')||'light';
+  document.body.classList.toggle('light',saved!=='dark');
+  updateThemeButtons();
+}
+
+function showAuthMode(mode){
+  const loginMode=mode==='login';
+  $('loginForm').classList.toggle('hidden',!loginMode);
+  $('registerForm').classList.toggle('hidden',loginMode);
+  $('loginTab').classList.toggle('active',loginMode);
+  $('employeeTab').classList.toggle('active',mode==='employee');
+  $('adminTab').classList.toggle('active',mode==='admin');
+  $('regSectorWrap').classList.toggle('hidden',mode==='admin');
+  $('registerSubmit').textContent=mode==='admin'?'Register administrator':'Register employee';
+  $('registerForm').dataset.mode=mode;
+  $('loginError').textContent='';$('registerError').textContent='';
+}
+
+async function login(event){
+  event.preventDefault();$('loginError').textContent='';
+  try{
+    const data=await api('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:$('loginEmail').value.trim(),password:$('loginPassword').value})});
+    currentUser=data.user;$('login').classList.add('hidden');$('splash').classList.add('hidden');$('app').classList.remove('hidden');await initializeWorkbench();
+  }catch(err){$('loginError').textContent=err.message;}
+}
+
+async function registerAccount(event){
+  event.preventDefault();$('registerError').textContent='';
+  const mode=$('registerForm').dataset.mode||'employee';
+  const payload={name:$('regName').value.trim(),email:$('regEmail').value.trim(),password:$('regPassword').value,company:$('regCompany').value.trim()};
+  if(mode==='employee')payload.sector=$('regSector').value.trim();
+  try{
+    const data=await api(mode==='admin'?'/api/register/admin':'/api/register/employee',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    $('registerForm').reset();
+    if(mode==='employee'){alert('Registration submitted. An administrator must approve your account before you can sign in.');showAuthMode('login');}
+    else{alert('Administrator registered. You can sign in now.');showAuthMode('login');}
+  }catch(err){$('registerError').textContent=err.message;}
+}
+
+function showLogin(){ currentUser=null;currentChatId=null;currentTeamId=null;$('app').classList.add('hidden');$('splash').classList.add('hidden');$('login').classList.remove('hidden'); }
+async function logout(){ try{await fetch('/api/logout',{method:'POST'});}catch(_){} showLogin(); }
+
+async function initializeWorkbench(){
+  $('profileName').textContent=currentUser.name||currentUser.email||'User';
+  $('profileMeta').innerHTML=`${esc(currentUser.email)}<br>${esc(currentUser.company)}${currentUser.sector?' · '+esc(currentUser.sector):''}<br>${esc(currentUser.role)}${currentUser.is_admin?' · Administrator':''}`;
+  $('headerProfile').textContent=`${currentUser.company}${currentUser.sector?' · '+currentUser.sector:''}`;
+  $('composer').classList.remove('disabled');
+  $('adminBtn').classList.toggle('hidden',!currentUser.is_admin);
+  $('teamAdminBtn').classList.remove('hidden');
+  if(currentUser.is_admin) $('adminBtn').textContent='Admin: Registration & Employees';
+  await refreshChats(); await refreshTeams(); await refreshHealth();
+}
+
+async function refreshHealth(){
+  try{
+    const data=await api('/api/health');
+    $('ollamaStatus').textContent=data.ollama_reachable?'online':'offline';
+    $('ollamaStatus').className=data.ollama_reachable?'status-ok':'';
+    $('modelStatus').textContent=data.resolved_model||'dynamic';
+  }catch(err){$('ollamaStatus').textContent='unavailable';$('ollamaStatus').className='danger-note';}
+}
+
+async function refreshChats(){
+  const data=await api('/api/chats'); const list=$('chatList'); list.innerHTML='';
+  const chats=(data.chats||[]).filter(c=>!c.team_id);
+  if(!chats.length){list.innerHTML='<div class="empty-list">No chats yet.</div>';return;}
+  chats.forEach(c=>{
+    const btn=document.createElement('button');btn.className='chat-item'+(Number(c.id)===Number(currentChatId)?' active':'');
+    btn.innerHTML=`<span class="dot"></span><span class="title">${esc(c.title||'New Chat')}</span>`;
+    btn.onclick=()=>openChat(c.id);list.appendChild(btn);
+  });
+}
+
+async function refreshTeams(){
+  try{
+    const data=await api('/api/teams'); const list=$('teamList');list.innerHTML='';
+    if(!(data.teams||[]).length){list.innerHTML='<div class="empty-list">No team chats.</div>';return;}
+    data.teams.forEach(t=>{
+      const btn=document.createElement('button');btn.className='chat-item'+(Number(currentTeamId)===Number(t.id)?' active':'');
+      btn.innerHTML=`<span class="dot"></span><span class="title">${esc(t.name)}</span><span class="team-tag">TEAM</span>`;
+      btn.onclick=()=>openTeam(t);list.appendChild(btn);
+    });
+  }catch(err){$('teamList').innerHTML='<div class="empty-list">Unable to load teams.</div>';}
+}
+
+async function newChat(){
+  try{
+    const data=await api('/api/chats/new',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({title:'New Chat'})});
+    currentChatId=data.chat_id;currentTeamId=null;$('chatStatus').textContent=currentChatId;$('headerTitle').textContent='Orion — Sovereign Workbench';
+    $('chat').innerHTML='';$('hero').classList.remove('hidden');
+    clearFiles();$('query').value='';resetWorkspaceScroll();
+    await refreshChats();await refreshTeams();resetWorkspaceScroll();$('query').focus();
+  }catch(err){renderMessage('assistant','Unable to create a new chat: '+err.message);}
+}
+
+async function openChat(id){
+  try{
+    const data=await api(`/api/chats/${id}`);currentChatId=id;currentTeamId=(data.chat&&data.chat.team_id)||null;
+    $('chatStatus').textContent=id;$('headerTitle').textContent=(data.chat&&data.chat.title)||'Orion — Sovereign Workbench';
+    $('chat').innerHTML='';$('hero').classList.add('hidden');
+    (data.messages||[]).forEach(m=>renderMessage(m.sender_type==='user'?'user':'assistant',m.content,m.files||[],false,m));
+    await activateChatState(id);await refreshChats();await refreshTeams();scrollToBottom();
+  }catch(err){renderMessage('assistant','Unable to open chat: '+err.message);}
+}
+
+async function activateChatState(id){
+  try{await api(`/api/chats/${id}/activate`,{method:'POST'});}catch(_){}
+}
+async function openTeamChatNav(){
+  try{const data=await api('/api/teams');const teams=data.teams||[];if(!teams.length){alert('You are not a member of any team yet.');return;}if(teams.length===1){await openTeam(teams[0]);return;}const names=teams.map((t,i)=>`${i+1}. ${t.name}`).join('\n');const choice=prompt('Choose a team by number:\n'+names);const idx=Number(choice)-1;if(Number.isInteger(idx)&&teams[idx])await openTeam(teams[idx]);}
+  catch(err){renderMessage('assistant','Unable to load team chats: '+err.message);}
+}
+
+async function openTeam(team){
+  try{
+    const teamId=Number(team.id);
+    currentTeamId=teamId;
+    const chatsData=await api('/api/chats');
+    const existing=(chatsData.chats||[]).find(c=>Number(c.team_id)===teamId);
+    let chatId=existing?existing.id:null;
+    if(!chatId){
+      const data=await api('/api/chats/new',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({title:team.name||'Team Chat',team_id:teamId})});
+      chatId=data.chat_id;
+    }
+    currentChatId=chatId;
+    $('chatStatus').textContent=`team:${teamId}`;
+    $('headerTitle').textContent=team.name||'Team Chat';
+    await openChat(chatId);
+  }catch(err){renderMessage('assistant','Unable to open team chat: '+err.message);}
+}
+
+function fileIcon(name){
+  const ext=(String(name||'').split('.').pop()||'').toLowerCase();
+  return ({pdf:'📕',docx:'📘',pptx:'📙',xlsx:'📗',xls:'📗',csv:'📊',png:'🖼️',jpg:'🖼️',jpeg:'🖼️',webp:'🖼️',txt:'📄',md:'📝',json:'🔧',log:'📜'})[ext]||'📎';
+}
+function normalizeFiles(files){
+  return (files||[]).map(f=>typeof f==='string'?{name:f}:f).filter(f=>f&&f.name);
+}
+function renderFileCards(files){
+  const arr=normalizeFiles(files); if(!arr.length)return '';
+  return `<div class="file-cards">${arr.map(f=>{
+    const name=esc(f.name); const href=f.download_url||f.url||''; const target=href?`href="${esc(href)}" target="_blank"`:'';
+    const local=f.local_url?`<img src="${esc(f.local_url)}" alt="" style="width:30px;height:30px;object-fit:cover;border-radius:7px">`:`<div class="file-icon">${fileIcon(f.name)}</div>`;
+    const inner=`${local}<div style="min-width:0"><div class="file-card-name">${name}</div><div class="file-card-meta">${href?'Open / download':'Attached file'}</div></div>`;
+    return href?`<a class="file-card" ${target}>${inner}</a>`:`<div class="file-card">${inner}</div>`;
+  }).join('')}</div>`;
+}
+function renderMessage(sender,content,files=[],autoScroll=true,meta=null){
+  $('hero').classList.add('hidden');
+  const row=document.createElement('div');row.className='message '+sender;
+  const bubble=document.createElement('div');bubble.className='bubble';
+  const senderName=meta?.sender_name || (sender==='assistant'?'Orion':currentUser?.name||'You');
+  const senderEmail=meta?.sender_email?`<span class="sender-email">${esc(meta.sender_email)}</span>`:'';
+  bubble.innerHTML=`<div class="sender-label">${esc(senderName)}${senderEmail}</div>${renderFileCards(files)}<div class="${sender==='user'?'user-content':'assistant-body'}">${esc(content)}</div>`;
+  if(sender==='assistant'){
+    const tools=document.createElement('div');tools.className='answer-tools';
+    const txt=document.createElement('button');txt.textContent='⬇ Download TXT';txt.onclick=()=>downloadTextFile('Orion_Answer.txt',String(content||''));tools.appendChild(txt);
+    const docxBtn=document.createElement('button');docxBtn.className='download-docx';docxBtn.textContent='📄 Download DOCX';docxBtn.onclick=()=>downloadAnswerDocx(String(content||''),docxBtn);tools.appendChild(docxBtn);
+    const md=document.createElement('button');md.textContent='⬇ Download Markdown';md.onclick=()=>downloadTextFile('Orion_Answer.md',String(content||''));tools.appendChild(md);
+    const copy=document.createElement('button');copy.textContent='Copy answer';copy.onclick=()=>navigator.clipboard?.writeText(String(content||''));tools.appendChild(copy);
+    bubble.appendChild(tools);
+  }
+  row.appendChild(bubble);$('chat').appendChild(row);if(autoScroll)scrollToBottom();return row;
+}
+
+function handleFileSelect(){
+  selectedFiles=Array.from($('fileInput').files||[]);
+  const badge=$('attachment');
+  if(selectedFiles.length){
+    $('attachmentName').textContent=selectedFiles.length===1?selectedFiles[0].name:`${selectedFiles.length} files selected`;
+    badge.style.display='flex';
+  } else badge.style.display='none';
+}
+function clearFiles(){selectedFiles=[];$('fileInput').value='';$('attachment').style.display='none';$('attachmentName').textContent='';}
+
+async function sendMessage(){
+  const typedQuery=$('query').value.trim();
+  if(!typedQuery && !selectedFiles.length){$('query').focus();return;}
+  if(!currentChatId){
+    try{
+      const data=await api('/api/chats/new',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({title:'New Chat',team_id:currentTeamId||null})});
+      currentChatId=data.chat_id;
+      $('chatStatus').textContent=currentTeamId?`team:${currentTeamId}`:currentChatId;
+      $('headerTitle').textContent=currentTeamId?'Team Chat':'Orion — Sovereign Workbench';
+      $('chat').innerHTML='';$('hero').classList.add('hidden');await refreshChats();await refreshTeams();
+    }catch(err){renderMessage('assistant','Unable to create a new chat: '+err.message);return;}
+  }
+
+  const displayQuery=typedQuery||'Analyze the uploaded files';
+  const previewFiles=selectedFiles.map(f=>({name:f.name,local_url:URL.createObjectURL(f)}));
+  renderMessage('user',displayQuery,previewFiles,true,{sender_name:currentUser?.name||'You',sender_email:currentUser?.email||''});
+  $('query').value='';
+  const loading=renderMessage('assistant','Processing locally…');
+
+  try{
+    if(!selectedFiles.length){
+      const data=await api('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:currentChatId,query:typedQuery})});
+      loading.remove();renderAssistantResult(data,null,null,null,[]);
+      persistArtifacts(currentChatId,{answer:data.report||'',created_at:Date.now()});
+      await refreshChats();await refreshTeams();await refreshHealth();
+      return;
+    }
+
+    const form=new FormData();selectedFiles.forEach(f=>form.append('file',f));form.append('query',displayQuery);form.append('user_query',typedQuery);form.append('chat_id',currentChatId);
+    const sentNames=selectedFiles.map(f=>f.name);clearFiles();
+    const data=await api('/api/analyze-file',{method:'POST',body:form});
+    loading.remove();
+    let chart=null,diagram=null,doc=null;
+    if(data.chart_required){
+      try{chart=await api('/api/generate-chart',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:currentChatId,query:typedQuery||'Create a chart from the uploaded data',chart_type:data.chart_type||null})});}
+      catch(e){chart={status:'error',message:e.message};}
+    }
+    if(data.diagram_required){
+      try{diagram=await api('/api/generate-diagram',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:currentChatId,query:typedQuery||'Create a diagram from the uploaded process'})});}
+      catch(e){diagram={status:'error',message:e.message};}
+    }
+    if(typedQuery&&/document|report|approval note|memo|deliverable|word|docx|presentation|pptx|excel|create.*report|generate.*report/i.test(typedQuery)){
+      try{doc=await api('/api/generate-doc',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:currentChatId,query:typedQuery,format:'docx'})});}
+      catch(e){doc={status:'error',message:e.message};}
+    }
+    renderAssistantResult(data,chart,diagram,doc,sentNames);
+    persistArtifacts(currentChatId,{chart,diagram,doc,answer:data.report||'',files:sentNames,created_at:Date.now()});
+    await refreshChats();await refreshTeams();await refreshHealth();
+  }catch(err){loading.remove();renderMessage('assistant','⚠️ '+err.message);}
+}
+
+function artifactStoreKey(chatId){return `sovereign_artifacts_${chatId}`;}
+function persistArtifacts(chatId,record){
+  if(!chatId)return;
+  try{
+    const key=artifactStoreKey(chatId);const existing=JSON.parse(localStorage.getItem(key)||'[]');
+    existing.push(record);localStorage.setItem(key,JSON.stringify(existing.slice(-50)));
+  }catch(_){ }
+}
+function restoreArtifacts(chatId){
+  if(!chatId)return;
+  try{
+    const records=JSON.parse(localStorage.getItem(artifactStoreKey(chatId))||'[]');
+    records.forEach(r=>{
+      const has=r.chart?.download_url||r.chart?.image_url||r.diagram?.download_url||r.diagram?.image_url||r.doc?.file_url;
+      if(has)renderAssistantResult({report:'',model_used:'local',task_type:'artifact'},r.chart,r.diagram,r.doc,[]);
+    });
+  }catch(_){ }
+}
+
+function renderAssistantResult(data,chart,diagram,doc,names){
+  const row=document.createElement('div');row.className='message assistant';
+  const bubble=document.createElement('div');bubble.className='bubble';
+  let html='<div class="sender-label">Orion</div>';
+  if(data.report)html+=`<div class="assistant-body">${esc(data.report)}</div>`;
+  if(names?.length)html+=renderFileCards(names.map(name=>({name})));
+  if(data.verified)html+=`<div class="files-line">✓ Answer grounded in uploaded evidence${data.chart_type?` · chart type: ${esc(data.chart_type)}`:''}</div>`;
+  const actions=[];
+  if(chart?.download_url)actions.push(`<button onclick='downloadArtifact(${JSON.stringify(chart.download_url)},${JSON.stringify(chart.filename||'orion-chart.png')})'>📊 Download PNG</button>`);
+  if(chart?.image_url)html+=`<div><img class="artifact" src="${esc(chart.image_url)}" alt="Generated chart" onclick="window.open(${JSON.stringify(chart.image_url)},'_blank')"></div>`;
+  if(diagram?.download_url)actions.push(`<button onclick='downloadArtifact(${JSON.stringify(diagram.download_url)},${JSON.stringify(diagram.filename||'orion-diagram.png')})'>🗺️ Download PNG</button>`);
+  if(diagram?.image_url)html+=`<div><img class="artifact" src="${esc(diagram.image_url)}" alt="Generated diagram" onclick="window.open(${JSON.stringify(diagram.image_url)},'_blank')"></div>`;
+  if(doc?.file_url)actions.push(`<button onclick='downloadArtifact(${JSON.stringify(doc.file_url)},${JSON.stringify(doc.filename||'orion-report.docx')})'>📄 Download DOCX report</button>`);
+  if(chart?.status==='error')actions.push(`<span class="danger-note">Chart: ${esc(chart.message)}</span>`);
+  if(diagram?.status==='error')actions.push(`<span class="danger-note">Diagram: ${esc(diagram.message)}</span>`);
+  if(doc?.status==='error')actions.push(`<span class="danger-note">Document: ${esc(doc.message)}</span>`);
+  // Every Orion answer gets local export controls, even when no chart/document was requested.
+  if(data.report){
+    actions.push(`<button onclick='downloadTextFile(\"Orion_Answer.txt\",${JSON.stringify(data.report)})'>⬇ Download TXT</button>`);
+    actions.push(`<button onclick='downloadAnswerDocx(${JSON.stringify(data.report)},this)'>📄 Download DOCX</button>`);
+    actions.push(`<button onclick='downloadTextFile(\"Orion_Answer.md\",${JSON.stringify(data.report)})'>⬇ Download Markdown</button>`);
+    actions.push(`<button onclick='navigator.clipboard?.writeText(${JSON.stringify(data.report)})'>Copy answer</button>`);
+  }
+  if(actions.length)html+=`<div class="artifact-actions">${actions.join('')}</div>`;
+  const kb=(data.kb_sources_used||[]).join(', ')||'none matched';
+  html+=`<div class="meta"><span><b>Model</b> ${esc(data.model_used||'local')}</span><span><b>Task</b> ${esc(data.task_type||'general')}</span><span><b>Sector</b> ${esc(data.sector||currentUser?.sector||'n/a')}</span><span><b>KB</b> ${esc(kb)}</span></div>`;
+  bubble.innerHTML=html;row.appendChild(bubble);$('chat').appendChild(row);scrollToBottom();
+}
+
+function closeModal(id){$(id).classList.add('hidden');}
+function openProfile(){
+  if(!currentUser)return;
+  $('profileModalName').textContent=currentUser.name||'—';$('profileModalEmail').textContent=currentUser.email||'—';$('profileModalCompany').textContent=currentUser.company||'—';$('profileModalSector').textContent=currentUser.sector||'—';$('profileModalRole').textContent=currentUser.role||'Employee';$('profileModal').classList.remove('hidden');
+}
+async function openLibrary(){
+  $('libraryModal').classList.remove('hidden');const box=$('libraryList');box.innerHTML='<div class="empty-list">Loading library…</div>';
+  try{const data=await api('/api/files');const files=data.files||[];box.innerHTML='';if(!files.length){box.innerHTML='<div class="empty-list">No uploaded files yet.</div>';return;}files.forEach(f=>{const row=document.createElement('div');row.className='library-item';row.innerHTML=`<div><div class="name">${esc(f.original_name)}</div><div class="meta">${esc(f.sector||'General')} · chat ${esc(f.chat_id||'unassigned')}</div></div><a class="small-btn" href="/api/files/${Number(f.id)}/download" target="_blank">Open</a>`;box.appendChild(row);});}
+  catch(err){box.innerHTML=`<div class="danger-note">${esc(err.message)}</div>`;}
+}
+async function openSettings(){
+  $('settingsModal').classList.remove('hidden');
+  try{const data=await api('/api/health');$('settingsOllama').textContent=data.ollama_reachable?'online':'offline';$('settingsModel').textContent=data.resolved_model||'dynamic';$('settingsModels').textContent=(data.available_models||[]).join(', ')||'none detected';}
+  catch(err){$('settingsOllama').textContent='unavailable';$('settingsModel').textContent='—';$('settingsModels').textContent='—';}
+}
+
+async function openAdmin(){
+  $('adminModal').classList.remove('hidden');$('adminError').textContent='';await refreshPendingRequests();
+}
+function closeAdmin(){$('adminModal').classList.add('hidden');}
+async function refreshPendingRequests(){
+  const box=$('pendingRequests');box.innerHTML='<div class="empty-list">Loading…</div>';
+  try{
+    const data=await api('/api/admin/registration-requests');box.innerHTML='';
+    if(!(data.requests||[]).length){box.innerHTML='<div class="empty-list">No pending employee registrations.</div>';return;}
+    data.requests.forEach(r=>{
+      const card=document.createElement('div');card.className='request-card';
+      card.innerHTML=`<strong>${esc(r.name||'Unnamed employee')}</strong><div>${esc(r.email||'')} · ${esc(r.sector||'')}</div><div class="request-actions"><button class="small-btn" onclick="decideRegistration(${Number(r.id)},'rejected')">Reject</button><button class="primary" style="padding:7px" onclick="decideRegistration(${Number(r.id)},'approved')">Approve</button></div>`;box.appendChild(card);
+    });
+  }catch(err){box.innerHTML=`<div class="danger-note">${esc(err.message)}</div>`;}
+}
+async function decideRegistration(id,decision){
+  try{await api(`/api/admin/registration-requests/${id}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({decision})});await refreshPendingRequests();await refreshHealth();}
+  catch(err){$('adminError').textContent=err.message;}
+}
+async function createEmployee(){
+  $('adminError').textContent='';
+  try{
+    const data=await api('/api/employees/create',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:$('newEmployeeName').value.trim(),email:$('newEmployeeEmail').value.trim(),password:$('newEmployeePassword').value,sector:$('newEmployeeSector').value.trim(),role:'Employee'})});
+    alert(`Employee created. User ID: ${data.user_id}`);$('newEmployeeName').value='';$('newEmployeeEmail').value='';$('newEmployeePassword').value='';$('newEmployeeSector').value='';await refreshPendingRequests();
+  }catch(err){$('adminError').textContent=err.message;}
+}
+
+async function uploadSOP(){
+  $('sopError').textContent='';
+  const fileInput=$('sopFileInput');
+  const sector=$('sopSector').value.trim();
+  const file=fileInput.files&&fileInput.files[0];
+  if(!file){$('sopError').textContent='Select an SOP file first.';return;}
+  try{
+    const form=new FormData();
+    form.append('file',file);
+    if(sector)form.append('sector',sector);
+    const data=await api('/api/sop-upload',{method:'POST',body:form});
+    alert(data.message||'SOP uploaded successfully.');
+    fileInput.value='';$('sopSector').value='';
+  }catch(err){$('sopError').textContent=err.message;}
+}
+
+async function openTeamManager(){
+  $('teamModal').classList.remove('hidden');$('teamError').textContent='';
+  await loadApprovedEmployees();
+  if(currentTeamId) await loadCurrentTeamManager(currentTeamId);
+  else $('currentTeamInfo').textContent='Select a team from the left sidebar.';
+}
+function closeTeamManager(){$('teamModal').classList.add('hidden');}
+async function loadApprovedEmployees(){
+  const box=$('approvedEmployeeList');box.innerHTML='<div class="empty-list">Loading approved employees…</div>';
+  try{
+    const data=await api('/api/users');box.innerHTML='';
+    const users=(data.users||[]).filter(u=>Number(u.id)!==Number(currentUser?.id));
+    if(!users.length){box.innerHTML='<div class="empty-list">No other approved employees are available yet.</div>';return;}
+    users.forEach(u=>{
+      const row=document.createElement('label');row.className='member-check';
+      row.innerHTML=`<input type="checkbox" value="${Number(u.id)}"><span>${esc(u.name||u.email)}<br><span class="muted">${esc(u.email)} · ${esc(u.sector||'')}</span></span>`;
+      box.appendChild(row);
+    });
+  }catch(err){box.innerHTML=`<div class="danger-note">${esc(err.message)}</div>`;}
+}
+async function createTeamFromUI(){
+  $('teamError').textContent='';const name=$('teamName').value.trim();
+  const member_ids=Array.from(document.querySelectorAll('#approvedEmployeeList input[type=checkbox]:checked')).map(x=>Number(x.value));
+  if(!name){$('teamError').textContent='Team name is required.';return;}
+  try{
+    const data=await api('/api/teams/create',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,member_ids})});
+    $('teamName').value='';$('joinTeamCode').value='';await refreshTeams();
+    const team=(await api('/api/teams')).teams.find(t=>Number(t.id)===Number(data.team_id));
+    if(team){await openTeam(team);await loadCurrentTeamManager(team.id);}
+    alert(`Team created. Invite code: ${data.invite_code}`);
+  }catch(err){$('teamError').textContent=err.message;}
+}
+async function joinTeamFromUI(){
+  $('teamError').textContent='';const code=$('joinTeamCode').value.trim();
+  if(!code){$('teamError').textContent='Invite code is required.';return;}
+  try{
+    const data=await api('/api/teams/join',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({invite_code:code})});
+    $('joinTeamCode').value='';await refreshTeams();
+    if(data.team) {await openTeam(data.team);await loadCurrentTeamManager(data.team.id);}
+  }catch(err){$('teamError').textContent=err.message;}
+}
+async function loadCurrentTeamManager(teamId){
+  currentTeamId=Number(teamId);const teams=(await api('/api/teams')).teams||[];const team=teams.find(t=>Number(t.id)===Number(teamId));
+  if(!team){$('currentTeamInfo').textContent='Team is no longer available.';return;}
+  $('currentTeamInfo').innerHTML=`<div><strong>${esc(team.name)}</strong></div><div class="team-code">Invite code: ${esc(team.invite_code)}</div>`;
+  try{
+    const membersData=await api(`/api/teams/${Number(teamId)}/members`);const members=membersData.members||[];
+    $('currentTeamMembers').innerHTML=members.length?members.map(m=>`<div class="member-row"><span>${esc(m.name||m.email)}<br><span class="muted">${esc(m.email||'')} · ${esc(m.team_role||'member')}</span></span></div>`).join(''):'<div class="empty-list">No members.</div>';
+    const all=(await api('/api/users')).users||[];const existing=new Set(members.map(m=>Number(m.id)));
+    const addBox=$('addTeamMembersList');addBox.innerHTML='';
+    all.filter(u=>!existing.has(Number(u.id))).forEach(u=>{
+      const row=document.createElement('label');row.className='member-check';row.innerHTML=`<input type="checkbox" value="${Number(u.id)}"><span>${esc(u.name||u.email)}<br><span class="muted">${esc(u.email||'')} · ${esc(u.sector||'')}</span></span>`;addBox.appendChild(row);
+    });
+    if(!addBox.children.length)addBox.innerHTML='<div class="empty-list">All approved employees are already members.</div>';
+  }catch(err){$('currentTeamMembers').innerHTML=`<div class="danger-note">${esc(err.message)}</div>`;}
+}
+async function addSelectedTeamMembers(){
+  $('teamError').textContent='';if(!currentTeamId){$('teamError').textContent='Select a team first.';return;}
+  const ids=Array.from(document.querySelectorAll('#addTeamMembersList input[type=checkbox]:checked')).map(x=>Number(x.value));
+  if(!ids.length){$('teamError').textContent='Select at least one employee.';return;}
+  try{
+    for(const user_id of ids){await api(`/api/teams/${Number(currentTeamId)}/members/add`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id})});}
+    await refreshTeams();await loadCurrentTeamManager(currentTeamId);await openTeam({id:currentTeamId});
+  }catch(err){$('teamError').textContent=err.message;}
+}
+async function openSelectedTeamChat(){
+  if(!currentTeamId){$('teamError').textContent='Select a team first.';return;}
+  const teams=(await api('/api/teams')).teams||[];const team=teams.find(t=>Number(t.id)===Number(currentTeamId));
+  if(team){closeTeamManager();await openTeam(team);}else $('teamError').textContent='Team not found.';
+}
+window.addEventListener('load',async()=>{
+  applyTheme();
+  try{
+    const data=await fetch('/api/me').then(r=>r.json());
+    if(data.authenticated){currentUser=data.user;$('login').classList.add('hidden');$('splash').classList.add('hidden');$('app').classList.remove('hidden');await initializeWorkbench();}
+  }catch(_){}
+});
+</script>
+</body>
+</html>

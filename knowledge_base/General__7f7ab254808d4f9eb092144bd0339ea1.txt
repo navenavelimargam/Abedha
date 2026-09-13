@@ -1,0 +1,199 @@
+SMART INDIA HACKATHON
+Problem Statement Title - Sovereign On-Premise Agentic AI Workbench using
+Open-Weight Multimodal LLMs for Confidential Industrial Work
+Problem Statement ID - SIH26117
+Organisation - Mangalore Refinery and Petrochemicals Limited (MRPL)
+Team ID -
+Solution Name - ORION
+Team [Abheda]
+September 2026
+Smart India Hackathon 2026
+Table of Contents
+1. Introduction
+2. Objective
+3. Approach
+4. Tech Stack
+5. Potential Challenges, Risks and How to Mitigate Them
+6. Feasibility and Viability
+7. Security Measures
+8. Benefits of the Solution
+9. Impact on Involved Entities
+10. Dependencies
+11. Future Scope
+12. Research and Validation Plan
+Introduction
+Industrial and public-sector organisations such as Mangalore Refinery and Petrochemicals Limited (MRPL) generate a continuous stream of confidential operational data — Standard Operating Procedures, incident and safety reports, maintenance logs, equipment manuals, engineering drawings (P&IDs), vendor correspondence, and financial records. Employees across Engineering, Operations, Safety, and Finance routinely need to search, summarise, and reason over this material to make timely decisions.
+Today, this work is either done manually — searching through folders and printed manuals — or increasingly, employees are tempted to use public cloud AI tools such as ChatGPT for speed. Both paths are problematic: manual search is slow and error-prone, while cloud AI tools require sending commercially sensitive and safety-critical information outside the organisation's controlled infrastructure, which is unacceptable for a regulated industrial environment.
+To solve this, we present Orion — an on-premise, agentic AI assistant built entirely on open-weight multimodal language models. Orion lets employees upload documents, images, and engineering drawings, ask natural-language questions, generate charts, diagrams, and reports, and receive grounded, source-cited answers — with every step of inference happening on infrastructure the organisation fully controls. No document, prompt, or inference request ever leaves the premises.
+Orion is architected as a Sovereign Enterprise AI Operating Layer — a private organisational intelligence platform running entirely inside MRPL's own infrastructure, understanding documents, images, spreadsheets, engineering drawings, correspondence, meeting records, and project history, and turning them into grounded decisions and actions.
+Objective
+Key objectives and requirements for Orion:
+1. Zero External Data Egress: Ensure all inference, document processing, and storage happen strictly on local/on-premise infrastructure, with no reliance on any external or cloud AI provider.
+2. Confidential Document Q&A: Allow employees to query SOPs, manuals, incident reports, and correspondence in natural language and receive grounded, page-cited answers.
+3. Multimodal Understanding: Process not just text but images, scanned documents, and engineering diagrams (P&IDs) using local vision-language models.
+4. Agentic, Multi-Step Reasoning: Move beyond single-turn chat to a system that plans, retrieves evidence, verifies, and takes multi-step action toward a task.
+5. Large-Document Intelligence: Handle industrial reports that run into hundreds of pages through chunking and relevance-based retrieval rather than naive full-document prompting.
+6. Data Analysis on Excel/CSV: Let employees ask natural-language questions over spreadsheets (e.g. maintenance logs, expenditure sheets) and get verified answers with charts.
+7. Deliverable Generation: Automatically generate DOCX, PPTX, XLSX reports, charts, and diagrams as outputs, not just conversational answers.
+8. Role-Based Team Collaboration: Support company/sector-scoped accounts, admin approval workflows, and shared team chats so departments can collaborate on the same evidence base.
+9. Model-Agnostic Architecture: Route each task to the best available local model (reasoning, vision, or coding) so the platform is never locked to a single vendor or model version.
+Approach
+Orion is built as a Sovereign Enterprise AI Operating Layer, combining an agentic orchestrator, a dynamic local model router, and an enterprise-grade retrieval pipeline, all running entirely on MRPL's own infrastructure.
+A. System Architecture
+Employees (Individuals & Teams)
+↓
+Orion Workbench
+↓
+Identity + RBAC + Audit + Governance
+↓
+Agentic Orchestrator (Planner / Document / Data / Vision / Knowledge / Coding / Verification / Governance Agents)
+↓
+Dynamic Model Router
+↓
+Reasoning LLM  /  Vision-Language Model  /  Code LLM
+↓
+Enterprise RAG + Knowledge Graph
+↓
+Enterprise Data Layer (Documents · Projects · Decisions · Tasks · Policies · History)
+↓
+Verification Layer (Grounding + Policy Check)
+↓
+Action / Output
+B. Core Capabilities
+Confidential document Q&A: an employee uploads a maintenance report and asks “What was the cause of the equipment failure?” — Orion retrieves the relevant passage and answers with a page citation (e.g. “Maintenance Report — Page 27”).
+Large-document intelligence: instead of sending an entire 500-page PDF to the model, Orion performs page extraction, chunking, and relevance-ranked retrieval before generation, keeping answers accurate and reducing hallucination.
+Excel/CSV intelligence: Orion detects the schema of an uploaded spreadsheet dynamically and answers questions like “Which department has the highest expenditure?” with a verified number and an accompanying chart.
+Multimodal / P&ID understanding: for images or scanned engineering drawings, local OCR/vision extracts visual information which Orion's vision-language model then reasons over, e.g. “What equipment is shown in this P&ID section?”
+Deliverable generation: Orion can turn an analysis into a DOCX, PPTX, or XLSX file — e.g. “Create a management summary from this report” produces a formatted document, not just chat text.
+Team collaboration: employees can form a team (e.g. “Maintenance Review”), share a conversation thread, and see each other's questions and Orion's grounded answers in context.
+C. Agentic Workflow
+User Request
+↓
+Task Identification
+↓
+Retrieve Evidence
+↓
+Select Best Local Model
+↓
+Generate
+↓
+Verify Against Evidence
+↓
+Respond / Take Action
+D. Retrieval and Knowledge Layer
+Orion's retrieval pipeline combines keyword search, semantic search, and metadata filtering, followed by re-ranking, before evidence is passed to the model — this is materially more reliable than plain vector search alone for dense industrial documents.
+An organisational Knowledge Graph links employees, projects, documents, issues, meetings, and approvals, so Orion can reason over relationships (e.g. “who is blocking this approval and why”), not just retrieve isolated text passages.
+All high-impact or sensitive actions pass through a human-in-the-loop step: AI recommendation → evidence → risk/policy check → human approval → action → audit log. Orion is designed to assist and recommend, not to silently execute organisational decisions.
+Tech Stack
+Potential Challenges, Risks and How to Mitigate Them
+1. Hardware and inference speed constraints
+Challenge: On-premise open-weight models are typically smaller than frontier cloud models and constrained by available GPU capacity, which can affect response latency on complex reasoning tasks.
+Our approach: Orion's dynamic model router selects the smallest model capable of a given task, applies quantisation for efficiency, and runs on dedicated on-premise GPU infrastructure sized to MRPL's concurrent usage needs.
+2. Hallucination on safety-critical industrial data
+Challenge: An ungrounded answer on safety-critical operational data (e.g. incident reports, pressure readings) could mislead an employee.
+Our approach: Every Orion answer is grounded through retrieval-augmented generation over verified organisational documents, with page/source citation on every answer. Low-confidence outputs are flagged, and Orion is positioned as decision-support with mandatory human sign-off for safety-critical actions — it does not autonomously execute physical or safety actions.
+3. Data privacy and sovereignty
+Challenge: Handling confidential SOPs, financial data, and engineering drawings raises strong data-protection requirements.
+Our approach: All Orion inference and document processing run strictly on MRPL's on-premise infrastructure with no external API calls; role-based access control restricts data visibility by sector and team; all storage is encrypted at rest.
+4. Integration with existing enterprise systems
+Challenge: Different departments may already use different document stores, ERPs, or maintenance systems, making integration non-trivial.
+Our approach: Orion exposes its ingestion and retrieval layer through modular internal APIs so existing systems can plug in incrementally, department by department, rather than requiring a single big-bang migration.
+5. Scalability across the organisation
+Challenge: The system must reliably serve concurrent usage across multiple departments and shifts, not just a handful of pilot users.
+Our approach: Orion's router/orchestrator architecture is infrastructure-agnostic by design — the same logic that selects a model for one user scales to selecting among GPU nodes in a production cluster serving the full workforce.
+6. User adoption and trust
+Challenge: Employees may be sceptical of AI-generated answers on operationally important material, or may find a new tool disruptive to existing workflows.
+Our approach: Every Orion answer is source-cited so employees can verify it against the original document; Orion augments rather than replaces existing review processes, and role-based team chats keep it embedded in normal departmental collaboration rather than being a separate silo.
+Feasibility and Viability
+1. Technical Feasibility
+Built entirely on mature, actively maintained open-weight models available in text, vision, and coding variants suitable for industrial use cases.
+Retrieval-augmented generation is a well-established pattern for grounding LLM answers in enterprise documents, reducing technical risk.
+A model-agnostic router means MRPL is never locked into one model family — as better open-weight models are released, Orion can adopt them without redesign.
+The agentic orchestrator pattern (Planner, Document, Data, Vision, Knowledge, Coding, Verification, Governance) is modular, allowing agents to be improved or replaced independently.
+2. Operational Feasibility
+Orion presents a simple chat-plus-upload interface that fits naturally into existing employee workflows — no specialised training is required to ask a question or upload a file.
+Role-based accounts (Engineering, Operations, Finance, IT, Safety) and admin-approved registration mirror how access is already managed within MRPL.
+Team chats allow Orion to slot into existing departmental collaboration patterns rather than requiring a new standalone process.
+3. Financial Feasibility
+Built entirely on open-weight models with zero per-token licensing cost, in contrast to recurring API costs for cloud LLM providers.
+Eliminates the compliance and legal risk (and associated cost) of sending confidential industrial data to third-party AI vendors.
+On-premise GPU infrastructure is a one-time and predictable capital investment, significantly cheaper over time than an enterprise-licensed cloud AI deployment at organisational scale.
+Security Measures
+On-Premise-Only Inference: All model inference happens on MRPL's local infrastructure; Orion makes no outbound calls to any external AI API.
+Role-Based Access Control (RBAC): Employees, administrators, and teams each have scoped access based on company, sector, and role, following the principle of least privilege.
+Authenticated Sessions: Employee and admin accounts are password-authenticated with secure salted hashing, with an admin-approval workflow for new registrations.
+Encrypted Storage: Documents, chat history, and knowledge-base indexes are stored on encrypted, organisation-managed local storage.
+Team-Scoped Data Isolation: Chats and files are scoped to the owning employee or team, with server-side checks before any read/write operation.
+Full Audit Trail: Every high-impact or sensitive action recommended by Orion is logged through the Governance agent for complete traceability.
+Human-in-the-Loop for Sensitive Actions: AI recommendations on safety-critical or high-impact matters always require human review and approval before action is taken.
+Identity Integration: Orion integrates with MRPL's existing SSO/AD/LDAP systems for centralised identity and access management.
+Benefits of the Solution
+1. Genuine Data Sovereignty
+Employees get modern AI assistance — document Q&A, summarisation, chart generation — without any confidential data ever leaving MRPL's controlled infrastructure.
+2. Faster Access to Institutional Knowledge
+Instead of manually searching through hundreds of pages of SOPs and manuals, employees get grounded, cited answers from Orion in seconds.
+3. Reduced Onboarding and Handover Risk
+The Orion Work Continuity Agent turns scattered project documents into a structured handover brief, reducing knowledge loss when employees change roles or leave a project.
+4. No Recurring Cloud AI Licensing Cost
+Built entirely on open-weight models, avoiding per-token API costs and vendor lock-in over the platform's lifetime.
+5. Model-Agnostic and Future-Proof
+As better open-weight models are released, Orion adopts them through its router without re-architecting the platform.
+6. Multimodal, Not Just Text
+Orion understands scanned documents, photographs, and engineering diagrams (P&IDs), not just plain text — closer to how engineers actually work with information.
+Impact on Involved Entities
+1. Plant Employees (Engineering, Operations, Safety, Finance)
+Faster access to SOPs, manuals, and past correspondence relevant to their work.
+Reduced time spent manually searching lengthy documents.
+Confidence that using AI assistance does not put confidential company data at risk.
+2. Department Managers and Project Leads
+Smoother project handovers through Orion's evidence-backed continuity briefs.
+Better visibility into project status, decisions, and pending approvals.
+3. IT / Information Security Teams
+A sanctioned, policy-compliant alternative to employees using unauthorised public AI tools with confidential data.
+A platform governed with standard enterprise access-control, identity, and audit practices.
+4. The Organisation (MRPL) as a whole
+Preserves commercially sensitive and safety-critical information within its own infrastructure.
+Builds long-term organisational memory that survives individual employee turnover.
+Establishes a reusable, model-agnostic AI platform that can extend beyond this initial use case to other confidential workflows across the organisation.
+Dependencies
+1. Infrastructure
+On-premise compute capable of running open-weight LLMs at organisational scale (dedicated GPU cluster).
+Secure local storage for the knowledge base, chat history, and uploaded documents.
+2. Software and Models
+A local inference runtime (Ollama or equivalent) and the selected open-weight text, vision, and coding models.
+Python/Flask backend and supporting libraries for document parsing, data analysis, and chart/diagram generation.
+3. Organisational
+Access to a representative set of SOPs, manuals, and reports for building and maintaining Orion's knowledge base.
+IT/InfoSec sign-off on deployment architecture, particularly around network isolation for a genuinely air-gapped deployment.
+Departmental participation in onboarding — employees and admins actively using and providing feedback on Orion.
+Future Scope
+1. Expanded Multi-Agent Orchestration
+Continue to deepen Orion's agent set — Planner, Document, Data, Vision, Knowledge, Coding, Verification, and Governance agents — so more complex, multi-step organisational requests can be handled autonomously with human sign-off.
+2. Richer Organisational Knowledge Graph
+Extend Orion's Knowledge Graph to cover a wider set of relationships — vendors, contracts, compliance obligations — enabling deeper cross-referenced reasoning.
+3. Predictive and Proactive Assistance
+Move Orion from reactive Q&A toward proactively surfacing relevant SOP updates, safety advisories, or pending approvals before an employee has to ask.
+4. Deeper Enterprise System Integration
+Connect Orion directly to maintenance management systems, ERP, and lab information systems so it can reason over live operational data, not just documents.
+5. Extension to Other Confidential Workflows
+Generalise Orion beyond this initial use case to other MRPL departments and, eventually, to other refineries and industrial units facing the same sovereignty and confidentiality constraints.
+Research and Validation Plan
+Given the confidential and safety-critical nature of the target environment, we are not fabricating survey data ahead of genuine user testing. Instead, this section lays out how we plan to validate Orion honestly, and what we would present to judges if asked for evidence beyond the demo.
+Planned validation approach
+Structured walkthroughs with engineering/operations staff (or SIH mentors with relevant industrial background) using representative, non-confidential sample documents to gather qualitative feedback on usefulness and trust.
+Comparison of manual document-search time versus Orion-assisted retrieval time on the same set of sample questions, to quantify the efficiency gain.
+Accuracy spot-checks: a reviewer manually verifies a sample of Orion's cited answers against source documents to measure groundedness and flag hallucination rate.
+Structured feedback on the Work Continuity Agent's handover brief, compared against a manually written handover note for the same sample project, to assess completeness and usefulness.
+Layer | Technology
+Reasoning models | Open-weight instruction/reasoning models (Qwen / Llama / DeepSeek family), served locally via Ollama
+Vision-language models | Open-weight VLMs for P&IDs, engineering drawings, scans, and handwritten notes
+Coding models | Open-weight coding models for internal automation, scripts, and API glue
+Orchestration | Multi-agent orchestrator — Planner, Document, Data, Vision, Knowledge, Coding, Verification, and Governance agents
+Retrieval | Hybrid enterprise RAG (keyword + semantic + metadata filter + re-ranking) with an organisational Knowledge Graph
+Backend | Python, Flask (REST API)
+Frontend | HTML / CSS / JavaScript workbench UI
+Data & documents | PyMuPDF, python-docx, python-pptx, openpyxl, pandas for parsing and analysis
+Visualisation | matplotlib for charts, networkx for diagrams
+Persistence | Encrypted local/on-premise database for users, teams, chats, files, and audit logs
+Infrastructure | On-premise / private GPU cluster, internal AI gateway, optional fully air-gapped deployment
+Identity & governance | Organisation SSO/AD/LDAP integration, RBAC, full audit logging

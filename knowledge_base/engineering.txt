@@ -1,0 +1,56 @@
+MRPL ENGINEERING, PROCESS & MAINTENANCE DEPARTMENT
+GENERAL OPERATING PROCEDURE — ENG-GEN-001
+Effective Date: 01-Apr-2025 | Review Cycle: Annual | Owner: Chief Engineer
+
+1. DEPARTMENT SCOPE
+This department covers P&ID and instrumentation management, inspection and maintenance
+of rotating and static equipment, process/design engineering calculations, quality control
+and testing, R&D and design documentation, and equipment manuals/SOP governance.
+
+2. INSPECTION AND MAINTENANCE FREQUENCY
+2.1 Routine visual inspection (vibration, leakage, noise) of rotating equipment: every 24
+    hours by the shift operator.
+2.2 Detailed vibration analysis on critical pumps and compressors: every 30 days by the
+    Reliability Engineering team.
+2.3 Boiler and pressure vessel safety valve testing: every 90 days, mandatory, no exceptions.
+2.4 Full statutory equipment inspection (boilers, pressure vessels): annually, coordinated
+    with the relevant regulatory inspecting authority.
+
+3. OPERATING LIMITS AND ALARM THRESHOLDS
+3.1 Boiler operating pressure: normal range 38-42 kg/cm2; alarm at 44 kg/cm2; automatic
+    trip at 46 kg/cm2.
+3.2 Pump bearing vibration: alert at 4.5 mm/s RMS; trip at 7.1 mm/s RMS (per ISO 10816-3
+    Class II machines).
+3.3 Pump bearing temperature: alert above 80 degrees C; shutdown above 95 degrees C.
+
+4. P&ID AND INSTRUMENTATION MANAGEMENT
+4.1 All P&ID revisions must be logged with revision number, date, and the engineer who
+    approved the change; the previous revision is archived, not deleted.
+4.2 Any field modification to piping, instrumentation, or control logic must be reflected
+    in the P&ID within 15 working days ("as-built" update requirement).
+4.3 Valve tag numbers and line numbers must match the current approved P&ID revision before
+    any maintenance work order is issued against that line.
+
+5. EQUIPMENT RESTART AFTER TRIP
+5.1 Root cause of any trip must be logged in the DCS event log before restart is attempted.
+5.2 A pump that trips on high vibration more than once within 24 hours may not be restarted
+    without Reliability Engineering sign-off.
+5.3 Restart authority: Shift Engineer for a first trip; Area Manager approval required for
+    a second trip within the same shift.
+
+6. FINDING SEVERITY AND APPROVAL NOTES
+6.1 Findings are classified Minor, Major, or Critical.
+6.2 Minor findings are logged in the CMMS and reviewed monthly; no immediate escalation.
+6.3 Major findings require Area Manager notification within 4 hours and a formal Approval
+    Note to the Head of Maintenance within 24 hours, including equipment tag, finding
+    description, immediate action taken, and target closure date.
+6.4 Critical findings (safety or environmental risk) require immediate Plant Manager
+    notification; the affected unit may be taken offline pending investigation.
+
+7. QUALITY CONTROL AND DESIGN VERIFICATION
+7.1 All engineering calculations (pressure drop, stress, capacity sizing) must be verified
+    by a second qualified engineer before being used for procurement or fabrication.
+7.2 QC test failures on any incoming batch must be logged and the batch quarantined pending
+    root-cause review; no quarantined material may be released without QC Head sign-off.
+
+END OF ENG-GEN-001

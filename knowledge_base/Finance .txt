@@ -1,0 +1,56 @@
+MRPL FINANCE, ACCOUNTS & AUDIT DEPARTMENT
+GENERAL OPERATING PROCEDURE — FIN-GEN-001
+Effective Date: 01-Jan-2025 | Review Cycle: Annual | Owner: Chief Financial Officer
+
+1. DEPARTMENT SCOPE
+The Finance, Accounts & Audit department is responsible for statutory and internal audit,
+budgeting and variance control, treasury and cash flow management, taxation and statutory
+compliance, accounts payable/receivable, and financial reporting to the Board and regulators.
+
+2. BUDGETING AND VARIANCE CONTROL
+2.1 Departmental budgets are prepared annually and reviewed quarterly against actuals.
+2.2 OpEx variance beyond 8% and CapEx variance beyond 12% against approved budget must be
+    explained in writing to Finance within 7 working days of quarter close.
+2.3 Any single line-item variance exceeding INR 25 lakh is automatically flagged for review.
+2.4 CapEx approval authority scales with amount: Department Head up to INR 10 lakh, General
+    Manager (Finance) up to INR 1 crore, CFO and Board Investment Committee above INR 1 crore.
+
+3. AUDIT (STATUTORY AND INTERNAL)
+3.1 Statutory audit qualifications must receive a written departmental response within 15
+    working days; qualifications repeated for two consecutive years escalate automatically
+    to the Audit Committee of the Board.
+3.2 Internal audit findings are classified High, Medium, or Low risk. High-risk findings
+    require a remediation plan with a named owner and a 30-day target closure date.
+3.3 All audit reports and working papers must be retained for a minimum of 8 years for
+    statutory compliance purposes.
+
+4. TREASURY AND CASH FLOW
+4.1 Minimum cash runway to be maintained at all times is 45 days of average operating
+    expenditure, reviewed monthly by Treasury.
+4.2 Any forecast showing runway below 30 days is escalated to the CFO immediately.
+4.3 All surplus cash beyond the operating buffer is to be parked only in board-approved
+    instruments; no discretionary investment by individual finance staff is permitted.
+
+5. TAXATION AND STATUTORY COMPLIANCE
+5.1 GST reconciliation must be completed for every vendor invoice before payment release.
+5.2 All statutory returns (GST, TDS, income tax) must be filed at least 3 working days
+    before the regulatory due date to allow for correction of filing errors.
+5.3 Any notice received from a tax or regulatory authority must be forwarded to the Head
+    of Taxation within 24 hours of receipt.
+
+6. ACCOUNTS PAYABLE AND RECEIVABLE
+6.1 Standard vendor payment terms are Net 45 days from invoice receipt unless the signed
+    contract specifies otherwise.
+6.2 Payments overdue by more than 30 days beyond agreed terms are reported in the weekly
+    AP ageing report to the Finance Controller.
+6.3 Customer receivables overdue by more than 60 days require a formal follow-up note and
+    are flagged in the monthly receivables review.
+
+7. REPORTING AND ESCALATION
+7.1 Monthly financial statements are to be closed and circulated internally within 5
+    working days of month end.
+7.2 Any matter with potential material impact on financial statements (fraud, major
+    write-off, regulatory penalty) must be escalated to the CFO immediately, outside
+    normal reporting cycles.
+
+END OF FIN-GEN-001
